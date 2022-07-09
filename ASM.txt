@@ -1,0 +1,32 @@
+4 Group: SE1647 SE1747 IB1609 IB1709
+
+11 Student: 3HE16 2HE17 1HE18 2HS16 3HS17
+
+10 EnRoll
+
+9 Subject: DBI202_10 JPD111_10 IBI101_10 FIN202_10 PRO193_10 MAD101_10 ECO121_8 ENM401_8 SSG103_5
+
+14 SubjectSemester: 9SU2022 5SP2022
+
+6 TimeSlot: 1->6
+
+16 Group_Subject_Semester: SE16 học 3SP, 2SU   IB16 học 3SP, 2SU    SE17 học 3SU     IB17 học 3SU
+
+132 Session: SE1647 học 5 môn(45Session), IB1609 học 5 môn(41Ses), SE1747 học 3 môn(25Ses), IB1709 học 3 môn(21Ses)
+
+78 Assessment ứng với 16 Group_Subject_Semester ENM có thay đổi kì SP 7 record, kì SU 9 record
+
+340 Attendance HE162121_45, HE163061_45, HE163063_55(học lại PRO), HE171111(25), HE174423(25),
+		HS161001_41, HS163062_41, HS173222_21, HS173313_21, HS174331_21,
+
+229 Student_Assessment:
+HE162121 học môn SSG103(Khá), MAD(khá), PRO(giỏi), DBI(Bis do 1 đầu điểm bị 0), JPD(fail attendance)
+HE163061 học môn SSG103(giỏi), MAD(giỏi), PRO(giỏi), DBI(cóc), JPD(cóc)
+HE163063 học môn SSG103(Khá), MAD(khá), PRO(Bis do 1 đầu điểm bị 0), DBI(Bis do AVG < 5), JPD(khá), PRO(khá)
+HE171111 học môn SSG103(giỏi), MAD(giỏi), PRO(Bis do FInal < 4), 
+HE174423 học môn SSG103(cóc), MAD(cóc), PRO(cóc),
+HS161001 học môn SSG103(cóc), ECO(cóc), ENM(cóc), IBI(giỏi), FIN(giỏi),
+HS163062 học môn SSG103(khá), ECO(giỏi), ENM(khá), IBI(khá), FIN(khá),
+HS173222 học môn SSG103(khá), ECO(giỏi), ENM(Bis do AVG < 5),
+HS173313 học môn SSG103(Bis do AVG < 5), ECO(giỏi), ENM(giỏi), 
+HS174331 học môn SSG103(fail attendance), ECO(khá), ENM(giỏi), 
