@@ -1,4 +1,22 @@
-﻿--use ORDER BY để sắp xếp sinh viên theo ngày tháng năm sinh --
+﻿--Students can check their results at the end of semester as following example:
+SELECT ID_Student, name, Semester, ID_SubjectSemester, ID_Group, StartDate, EndDate, AVG, [dbo].[GetStatus] (ID_Student, ID_SubjectSemester) AS [Status] 
+FROM
+(
+	SELECT s.ID_Student, sub.name, ss.Semester,ss.ID_SubjectSemester, g.ID_Group, ss.StartDate, ss.EndDate ,SUM(sa.score * ass.[Weight] / 100) AS [AVG]
+	FROM [Subject] sub	JOIN Subject_Semester ss ON sub.ID_Subject = ss.ID_Subject
+						JOIN Group_Subject_Semester gss ON gss.ID_SubjectSemester = ss.ID_SubjectSemester
+						JOIN [Group] g ON g.ID_Group = gss.ID_Group
+						JOIN Assessment ass ON ass.ID_SubjectSemester = ss.ID_SubjectSemester
+						JOIN Student_Assessment sa ON sa.ID_Assessment = ass.ID_Assessment
+						JOIN Enroll e ON e.ID_Group = g.ID_Group
+						JOIN Student s ON s.ID_Student = sa.ID_Student AND s.ID_Student = e.ID_Student
+	GROUP BY s.ID_Student, ass.ID_SubjectSemester, sub.name, ss.Semester, g.ID_Group, ss.StartDate, ss.EndDate,ss.ID_SubjectSemester
+	HAVING s.ID_Student = 'HE162121'	--comment dòng này sẽ cho ra tất cả học sinh
+) tb1
+ORDER BY StartDate DESC		
+
+
+--use ORDER BY để sắp xếp sinh viên theo ngày tháng năm sinh --
 SELECT * FROM Student ORDER BY dob DESC
 
 
@@ -28,3 +46,6 @@ FROM(
 ) tb1
 GROUP BY ID_Student 
 HAVING AVG([AVG]) >= 9 
+
+
+		
