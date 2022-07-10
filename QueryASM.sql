@@ -1,4 +1,5 @@
 ﻿--Students can check their results at the end of semester as following example:
+--USE FUNCTION, AGGREGATE, SUB-QUERRY
 SELECT ID_Student, name, Semester, ID_SubjectSemester, ID_Group, StartDate, EndDate, AVG, [dbo].[GetStatus] (ID_Student, ID_SubjectSemester) AS [Status] 
 FROM
 (
