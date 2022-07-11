@@ -72,3 +72,25 @@ WhERE e.ID_Group IS NULL
 -- 8 Gọi SP để truy vấn GPA của khóa 17
 EXEC [dbo].[spCompareGPA]
 
+
+--9 use SELF JOIN để so sánh GPA của các học sinh khóa 16
+WITH temp AS 
+(
+	SELECT ID_Student, AVG([AVG]) as GPA
+	FROM
+	(
+		SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+		FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
+		GROUP BY sa.ID_Student, a.ID_SubjectSemester
+	) tb1
+	WHERE ID_Student LIKE '__16%'
+	GROUP BY ID_Student
+)
+
+SELECT * 
+FROM temp a, temp b
+WHERE a.GPA > b.GPA
+ORDER BY a.ID_Student
+
+
+
