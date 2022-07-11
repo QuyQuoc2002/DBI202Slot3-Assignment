@@ -49,7 +49,6 @@ GROUP BY ID_Student
 HAVING AVG([AVG]) >= 9 
 
 
-
 -- Tìm CÓC VÀNG (người có điểm trung bình môn cao nhất trong kì)
 SELECT TOP 1 ID_Student, Semester, AVG([AVG]) AS [AVG in Semester]
 FROM( 
@@ -58,6 +57,6 @@ FROM(
 						INNER JOIN Subject_Semester ss ON ss.ID_SubjectSemester = a.ID_SubjectSemester
 	GROUP BY sa.ID_Student, a.ID_SubjectSemester, ss.Semester
 	) tb1
-WHERE ID_Student LIKE '__17%' AND Semester = 'SU2022' 
+WHERE ID_Student LIKE '__17%' AND Semester = 'SU2022' --nhập khóa và kì học 
 GROUP BY ID_Student, Semester
 ORDER BY [AVG in Semester] DESC
