@@ -49,4 +49,15 @@ GROUP BY ID_Student
 HAVING AVG([AVG]) >= 9 
 
 
-		
+
+-- Tìm CÓC VÀNG (người có điểm trung bình môn cao nhất trong kì)
+SELECT TOP 1 ID_Student, Semester, AVG([AVG]) AS [AVG in Semester]
+FROM( 
+	SELECT sa.ID_Student, a.ID_SubjectSemester, ss.Semester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+	FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment		
+						INNER JOIN Subject_Semester ss ON ss.ID_SubjectSemester = a.ID_SubjectSemester
+	GROUP BY sa.ID_Student, a.ID_SubjectSemester, ss.Semester
+	) tb1
+WHERE ID_Student LIKE '__17%' AND Semester = 'SU2022' 
+GROUP BY ID_Student, Semester
+ORDER BY [AVG in Semester] DESC
