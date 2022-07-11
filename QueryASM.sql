@@ -1,4 +1,4 @@
-﻿--Students can check their results at the end of semester as following example:
+﻿-- 1 Students can check their results at the end of semester as following example:
 --USE FUNCTION, AGGREGATE, SUB-QUERRY
 SELECT ID_Student, name, Semester, ID_SubjectSemester, ID_Group, StartDate, EndDate, AVG, [dbo].[GetStatus] (ID_Student, ID_SubjectSemester) AS [Status] 
 FROM
@@ -17,11 +17,11 @@ FROM
 ORDER BY StartDate DESC		
 
 
---use ORDER BY để sắp xếp sinh viên theo ngày tháng năm sinh --
+-- 2 use ORDER BY để sắp xếp sinh viên theo ngày tháng năm sinh --
 SELECT * FROM Student ORDER BY dob DESC
 
 
---use INNER JOINS để xem sinh viên HE162121 điểm danh môn JDP bao nhiêu lần trên tổng số slot của môn đó--
+-- 3 use INNER JOINS để xem sinh viên HE162121 điểm danh môn JDP bao nhiêu lần trên tổng số slot của môn đó--
 SELECT s.ID_Student, s.[name], sub.ID_Subject, se.Slot_Number, att.Check_Attendance, sub.totalSlot 
 FROM 
 Student s INNER JOIN Attendance att ON s.ID_Student = att.ID_Student 
@@ -31,14 +31,14 @@ Student s INNER JOIN Attendance att ON s.ID_Student = att.ID_Student
 WHERE s.ID_Student = 'HE162121' AND sub.ID_Subject = 'JPD111'
 
 
--- use aggregate funtions để tính điểm trung bình môn của học sinh --
+-- 4 use aggregate funtions để tính điểm trung bình môn của học sinh --
 SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
 FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
 GROUP BY sa.ID_Student, a.ID_SubjectSemester
 ORDER BY sa.ID_Student
 
 
--- use GROUP BY and HAVING để tìm ra những sinh viên có GPA đạt xuất sắc
+-- 5 use GROUP BY and HAVING để tìm ra những sinh viên có GPA đạt xuất sắc
 SELECT ID_Student, AVG([AVG]) as GPA
 FROM(
 	SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
@@ -49,14 +49,26 @@ GROUP BY ID_Student
 HAVING AVG([AVG]) >= 9 
 
 
--- Tìm CÓC VÀNG (người có điểm trung bình môn cao nhất trong kì)
+-- 6 Tìm CÓC VÀNG (người có điểm trung bình môn cao nhất trong kì)
 SELECT TOP 1 ID_Student, Semester, AVG([AVG]) AS [AVG in Semester]
 FROM( 
 	SELECT sa.ID_Student, a.ID_SubjectSemester, ss.Semester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
-	FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment		
+	FROM Assessment a	INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment		
 						INNER JOIN Subject_Semester ss ON ss.ID_SubjectSemester = a.ID_SubjectSemester
 	GROUP BY sa.ID_Student, a.ID_SubjectSemester, ss.Semester
 	) tb1
 WHERE ID_Student LIKE '__17%' AND Semester = 'SU2022' --nhập khóa và kì học 
 GROUP BY ID_Student, Semester
 ORDER BY [AVG in Semester] DESC
+
+
+-- 7 Dùng LEFT JOIN và WHERE để xem những sinh viên nào chưa được xếp lớp
+SELECT s.ID_Student, s.[name], e.ID_Group
+FROM
+Student s LEFT JOIN Enroll e ON S.ID_Student = e.ID_Student
+WhERE e.ID_Group IS NULL
+
+
+-- 8 Gọi SP để truy vấn GPA của khóa 17
+EXEC [dbo].[spCompareGPA]
+
