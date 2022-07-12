@@ -1,9 +1,9 @@
 ﻿-- 1 Students can check their results at the end of semester as following example:
---USE FUNCTION, AGGREGATE, SUB-QUERRY
-SELECT ID_Student, name, Semester, ID_SubjectSemester, ID_Group, StartDate, EndDate, AVG, [dbo].[GetStatus] (ID_Student, ID_SubjectSemester) AS [Status] 
+-- USE FUNCTION, AGGREGATE, SUB-QUERRY
+SELECT ID_Student,ID_Subject, name AS [Subject Name], Semester, ID_Group, StartDate, EndDate, AVG, [dbo].[GetStatus] (ID_Student, ID_SubjectSemester) AS [Status] 
 FROM
 (
-	SELECT s.ID_Student, sub.name, ss.Semester,ss.ID_SubjectSemester, g.ID_Group, ss.StartDate, ss.EndDate ,SUM(sa.score * ass.[Weight] / 100) AS [AVG]
+	SELECT s.ID_Student, sub.ID_Subject, sub.name, ss.Semester,ss.ID_SubjectSemester, g.ID_Group, ss.StartDate, ss.EndDate ,SUM(sa.score * ass.[Weight] / 100) AS [AVG]
 	FROM [Subject] sub	JOIN Subject_Semester ss ON sub.ID_Subject = ss.ID_Subject
 						JOIN Group_Subject_Semester gss ON gss.ID_SubjectSemester = ss.ID_SubjectSemester
 						JOIN [Group] g ON g.ID_Group = gss.ID_Group
@@ -11,7 +11,7 @@ FROM
 						JOIN Student_Assessment sa ON sa.ID_Assessment = ass.ID_Assessment
 						JOIN Enroll e ON e.ID_Group = g.ID_Group
 						JOIN Student s ON s.ID_Student = sa.ID_Student AND s.ID_Student = e.ID_Student
-	GROUP BY s.ID_Student, ass.ID_SubjectSemester, sub.name, ss.Semester, g.ID_Group, ss.StartDate, ss.EndDate,ss.ID_SubjectSemester
+	GROUP BY s.ID_Student, sub.ID_Subject, ass.ID_SubjectSemester, sub.name, ss.Semester, g.ID_Group, ss.StartDate, ss.EndDate,ss.ID_SubjectSemester
 	HAVING s.ID_Student = 'HE162121'	--comment dòng này sẽ cho ra tất cả học sinh
 ) tb1
 ORDER BY StartDate DESC		
@@ -73,7 +73,7 @@ WhERE e.ID_Group IS NULL
 EXEC [dbo].[spCompareGPA]
 
 
---9 use SELF JOIN để so sánh GPA của các học sinh khóa 16
+-- 9 use SELF JOIN để so sánh GPA của các học sinh khóa 16
 WITH temp AS 
 (
 	SELECT ID_Student, AVG([AVG]) as GPA
@@ -87,10 +87,13 @@ WITH temp AS
 	GROUP BY ID_Student
 )
 
-SELECT * 
+SELECT a.ID_Student, a.GPA, '>' as [ ], b.ID_Student, b.GPA 
 FROM temp a, temp b
 WHERE a.GPA > b.GPA
 ORDER BY a.ID_Student
+
+
+-- 10
 
 
 
