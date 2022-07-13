@@ -35,7 +35,29 @@ This database consists of 11 tables:
     - Group `IB1609` takes `5` Subjects (41` Session)
     - Group `SE1747` takes `3` Subjects (25` Session)
     - Group `IB1709` takes `3` Subjects (21` Session)
-9. 
+9. ***Assessment*** (78 records) depend on 16 Group_Subject_Semester `ENM401` have updated (`SP2022`: 7 records, `SU2022`: 9 records)
+10. ***Attendance*** (340records) form idStudent_checkAtt: 
+    - HE162121_45
+    - HE163061_45
+    - HE163063_55 (reStudy PRO)
+    - HE171111(25)
+    - HE174423(25),
+	- HS161001_41
+	- HS163062_41
+	- HS173222_21
+	- HS173313_21
+	- HS174331_21
+11. ***Student_Assessment*** (229 records) details:
+    - HE162121 takes SSG103(`PASS`), MAD(`PASS`), PRO(`PASS`), DBI(`NOT PASS` 1 score is 0), JPD(`Fail attendance`)
+    - HE163061 takes SSG103(`PASS`), MAD(`PASS`), PRO(`PASS`), DBI(`PASS`), JPD(`PASS`)     ***GOLDEN TOAD*** in SU2022
+    - HE163063 takes SSG103(`PASS`), MAD(`PASS`), PRO(`NOT PASS` 1 score is 0), DBI(`NOT PASS` AVG < 5), JPD(`PASS`), PRO(`PASS`)
+    - HE171111 takes SSG103(`PASS`), MAD(`PASS`), PRO(`NOT PASS` FInal < 4), 
+    - HE174423 takes SSG103(`PASS`), MAD(`PASS`), PRO(`PASS`),           ***GOLDEN TOAD*** in SU2022
+    - HS161001 takes SSG103(`PASS`), ECO(`PASS`), ENM(`PASS`), IBI(`PASS`), FIN(`PASS`),         ***GOLDEN TOAD*** in SP2022
+    - HS163062 takes SSG103(`PASS`), ECO(`PASS`), ENM(`PASS`), IBI(`PASS`), FIN(`PASS`),
+    - HS173222 takes SSG103(`PASS`), ECO(`PASS`), ENM(`NOT PASS` AVG < 5),
+    - HS173313 takes SSG103(`NOT PASS` AVG < 5), ECO(`PASS`), ENM(`PASS`), 
+    - HS174331 takes SSG103(`Fail attendance`), ECO(`PASS`), ENM(`PASS`), 
 
 
 
