@@ -1,6 +1,6 @@
 ##### QuocpqHE163061 - DBI202SLOT3
 
-# Student Grading Management Sub-System
+<h1 align = "center"> Student Grading Management Sub-System </h1>
 
 <br />
 
