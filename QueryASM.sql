@@ -93,7 +93,18 @@ WHERE a.GPA > b.GPA
 ORDER BY a.ID_Student
 
 
--- 10
+-- 10 Each Subject code, student can check their detailed result of as below example:
+WITH temp AS (
+	SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+	FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
+	GROUP BY sa.ID_Student, a.ID_SubjectSemester
+	HAVING ID_Student = 'HE163061' AND ID_SubjectSemester = 'DBI202SU2022'
+)
+
+SELECT a.name AS [GRADE ITEM], a.Weight AS [WEIGHT], sa.Score AS [VALUE], (SELECT AVG FROM temp) AS AVG
+FROM Student_Assessment sa JOIN Assessment a ON sa.ID_Assessment = a.ID_Assessment 
+WHERE ID_Student = 'HE163061' AND ID_SubjectSemester = 'DBI202SU2022'
+
 
 
 
