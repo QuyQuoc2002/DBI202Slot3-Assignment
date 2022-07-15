@@ -63,9 +63,247 @@ This database consists of 11 tables:
 
 ## II. An ERD that fully describes the database.
 
-<p align="center" margin = 0 padding = 0>
-  <img src="https://scontent-hkt1-1.xx.fbcdn.net/v/t1.15752-9/290536996_1737863259900272_9215075193918391055_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=ae9488&_nc_ohc=6DONYGRdGu0AX9iJ527&_nc_ht=scontent-hkt1-1.xx&oh=03_AVLqC0Qns4nw8EbPviltNS9qZl_IF1HAIfixRsBfnVv1uQ&oe=62F7A1B2">
+<p align="center" margin  =25px padding = 25px>
+  <img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/ER.jpg?raw=true">
 </p>
+
+<br />
+
+## III. The relational schema derived from the ERD that is at least in 3NF
+
+<p align="center" margin  =25px padding = 25px>
+  <img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/Diagram.png?raw=true">
+</p>
+
+<br />
+
+## IV. The set of database statements used to create the tables.
+
+<br />
+
+```sql
+CREATE TABLE Student(
+ID_Student NCHAR(20) PRIMARY KEY,
+[name] NVARCHAR(150),
+gender BIT,
+dob DATE
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE [Subject](
+ID_Subject NCHAR(20) PRIMARY KEY,
+[name] NVARCHAR(150),
+totalSlot int
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE [Subject_Semester](
+ID_SubjectSemester NCHAR(20) PRIMARY KEY,
+ID_Subject NCHAR(20),
+Semester NCHAR(20),
+StartDate DATE,
+EndDate DATE,
+FOREIGN KEY (ID_Subject) REFERENCES [Subject](ID_Subject),
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE Assessment(
+ID_Assessment NCHAR(20) PRIMARY KEY,
+ID_SubjectSemester NCHAR(20) FOREIGN KEY REFERENCES [Subject_Semester](ID_SubjectSemester),
+[name] NVARCHAR(150),
+[Weight] int,
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE Student_Assessment(
+ID_Assessment NCHAR(20),
+ID_Student NCHAR(20),
+[Date] DATE,
+Score FLOAT,
+PRIMARY KEY (ID_Assessment,ID_Student,[Date]),
+FOREIGN KEY (ID_Student) REFERENCES [Student](ID_Student),
+FOREIGN KEY (ID_Assessment) REFERENCES [Assessment](ID_Assessment),
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE TimeSlot(
+Slot INT PRIMARY KEY,
+[Time] TIME,
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE [Group](
+ID_Group NCHAR(20) PRIMARY KEY,
+[name] NVARCHAR(150),
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE Enroll(
+ID_Student NCHAR(20),
+ID_Group NCHAR(20),
+PRIMARY KEY (ID_Student, ID_Group),
+FOREIGN KEY (ID_Student) REFERENCES [Student](ID_Student),
+FOREIGN KEY (ID_Group) REFERENCES [Group](ID_Group),
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE Group_Subject_Semester(
+ID_Group NCHAR(20),
+ID_SubjectSemester NCHAR(20),
+PRIMARY KEY(ID_Group, ID_SubjectSemester),
+FOREIGN KEY (ID_Group) REFERENCES [Group](ID_Group),
+FOREIGN KEY (ID_SubjectSemester) REFERENCES [Subject_Semester](ID_SubjectSemester)
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE [Session](
+ID_Session NCHAR(20) PRIMARY KEY,
+[name] NVARCHAR(150),
+ID_SubjectSemester NCHAR(20),
+Slot_Number int,
+Slot int,
+ID_Group NCHAR(20),
+Room NCHAR(20),
+FOREIGN KEY (Slot) REFERENCES [TimeSlot](Slot),
+FOREIGN KEY (ID_Group) REFERENCES [Group](ID_Group),
+FOREIGN KEY (ID_SubjectSemester) REFERENCES [Subject_Semester](ID_SubjectSemester)
+)
+```
+
+<br />
+
+```sql
+CREATE TABLE Attendance(
+ID_Student NCHAR(20),
+ID_Session NCHAR(20),
+Check_Attendance BIT,
+PRIMARY KEY (ID_Student, ID_Session),
+FOREIGN KEY (ID_Student) REFERENCES [Student](ID_Student),
+FOREIGN KEY (ID_Session) REFERENCES [Session](ID_Session),
+)
+```
+
+<br />
+
+## V. 10 queries that demonstrate the usefulness of the database.
+
+<br />
+
+### 1. USE `FUNCTION`, `AGGREGATE`, `SUB-QUERRY` <br />
+> Students can check their results at the end of semester as following Query:
+
+```sql
+SELECT ID_Student,ID_Subject, name AS [Subject Name], Semester, ID_Group, StartDate, EndDate, AVG, [dbo].[GetStatus] (ID_Student, ID_SubjectSemester) AS [Status] 
+FROM
+(
+	SELECT s.ID_Student, sub.ID_Subject, sub.name, ss.Semester,ss.ID_SubjectSemester, g.ID_Group, ss.StartDate, ss.EndDate ,SUM(sa.score * ass.[Weight] / 100) AS [AVG]
+	FROM [Subject] sub	JOIN Subject_Semester ss ON sub.ID_Subject = ss.ID_Subject
+				JOIN Group_Subject_Semester gss ON gss.ID_SubjectSemester = ss.ID_SubjectSemester
+				JOIN [Group] g ON g.ID_Group = gss.ID_Group
+				JOIN Assessment ass ON ass.ID_SubjectSemester = ss.ID_SubjectSemester
+				JOIN Student_Assessment sa ON sa.ID_Assessment = ass.ID_Assessment
+				JOIN Enroll e ON e.ID_Group = g.ID_Group
+				JOIN Student s ON s.ID_Student = sa.ID_Student AND s.ID_Student = e.ID_Student
+	GROUP BY s.ID_Student, sub.ID_Subject, ass.ID_SubjectSemester, sub.name, ss.Semester, g.ID_Group, ss.StartDate, ss.EndDate,ss.ID_SubjectSemester
+	HAVING s.ID_Student = 'HE162121'	--comment dòng này sẽ cho ra tất cả học sinh
+) tb1
+ORDER BY StartDate DESC	
+```
+
+> SQL above have a function **`[dbo].[GetStatus] (ID_Student, ID_SubjectSemester)`** use to check PASS or NOT PASS or FAIL ATTENDANCE and this is here: 
+
+```sql
+CREATE OR ALTER FUNCTION GetStatus
+(
+	@ID_Student NCHAR(20),
+	@ID_Subject_Semester NCHAR(20) 
+)
+RETURNS VARCHAR(50)
+AS
+BEGIN
+	--DECLARE
+	DECLARE @Status VARCHAR(50);
+	DECLARE @totalSlot INT;
+	DECLARE @checkAtt INT;
+	DECLARE @AVG FLOAT;
+	DECLARE @FinalScore FLOAT;
+	DECLARE @MinScore FLOAT;
+	SET @Status = 'PASS';
+	
+	--CHECK ATTENDANCE--
+	SELECT @totalSlot = s.totalSlot  
+	FROM Subject s JOIN Subject_Semester ss ON s.ID_Subject = ss.ID_Subject WHERE ss.ID_SubjectSemester = @ID_Subject_Semester;
+	SELECT @checkAtt = SUM(att.Check_Attendance) FROM Attendance att JOIN Student s ON att.ID_Student = s.ID_Student
+											JOIN [Session] sess ON sess.ID_Session = att.ID_Session
+			WHERE s.ID_Student = @ID_Student AND  sess.ID_SubjectSemester = @ID_Subject_Semester
+	IF (CAST(@checkAtt AS FLOAT) / CAST (@totalSlot as FLOAT)) < 0.8
+	BEGIN
+		SET @Status = 'Fail Attendance';
+	END
+
+	--CHECK AVG < 5
+	SELECT @AVG = SUM(sa.score * a.[Weight] / 100)
+	FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
+	GROUP BY sa.ID_Student, a.ID_SubjectSemester
+	HAVING sa.ID_Student = @ID_Student AND a.ID_SubjectSemester = @ID_Subject_Semester
+	IF @AVG <5 
+	BEGIN
+		SET @Status = 'NOT PASS';
+	END
+
+	--CHECK FINAL EXAM < 4
+	SELECT @FinalScore = sa.Score FROM
+	Student_Assessment sa	JOIN Student s ON sa.ID_Student = s.ID_Student
+						JOIN Assessment ass ON sa.ID_Assessment = ass.ID_Assessment
+	WHERE ass.name = 'FinalExam' AND sa.ID_Student = @ID_Student AND ass.ID_SubjectSemester = @ID_Subject_Semester
+	IF @FinalScore < 4
+	BEGIN
+		SET @Status = 'NOT PASS';
+	END
+
+	--CHECK 1 đầu điểm = 0
+	SELECT @MinScore =  MIN(sa.Score) 
+	FROM
+	Student_Assessment sa	JOIN Student s ON sa.ID_Student = s.ID_Student
+						JOIN Assessment ass ON sa.ID_Assessment = ass.ID_Assessment
+	WHERE sa.ID_Student = @ID_Student AND ass.ID_SubjectSemester = @ID_Subject_Semester
+	IF @MinScore = 0
+	BEGIN
+		SET @Status = 'NOT PASS';
+	END
+
+
+	RETURN @Status;
+END;
+```
+
 
 
 
