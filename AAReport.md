@@ -4,7 +4,7 @@
 
 <br />
 
-## Brief description of the database
+## I. Brief description of the database
 
 This database consists of 11 tables:
 
@@ -61,7 +61,7 @@ This database consists of 11 tables:
 
 <br />
 
-## An ERD that fully describes the database.
+## II. An ERD that fully describes the database.
 
 <p align="center" margin = 0 padding = 0>
   <img src="https://scontent-hkt1-1.xx.fbcdn.net/v/t1.15752-9/290536996_1737863259900272_9215075193918391055_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=ae9488&_nc_ohc=6DONYGRdGu0AX9iJ527&_nc_ht=scontent-hkt1-1.xx&oh=03_AVLqC0Qns4nw8EbPviltNS9qZl_IF1HAIfixRsBfnVv1uQ&oe=62F7A1B2">
