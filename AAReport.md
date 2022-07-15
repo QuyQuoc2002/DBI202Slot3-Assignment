@@ -327,6 +327,21 @@ FROM Student_Assessment sa JOIN Assessment a ON sa.ID_Assessment = a.ID_Assessme
 WHERE ID_Student = 'HE163061' AND ID_SubjectSemester = 'DBI202SU2022'
 ```
 
+Result: 
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/2.png?raw=true">
+
+### 3. USE [ORDER BY]
+
+> Sort studet list by date of birth as below Query
+
+```sql
+SELECT * FROM Student ORDER BY dob DESC
+```
+
+
+
+
 
 
 
