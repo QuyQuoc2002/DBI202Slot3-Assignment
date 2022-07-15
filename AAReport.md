@@ -331,6 +331,8 @@ Result:
 
 <img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/2.png?raw=true">
 
+<br />
+
 ### 3. USE [ORDER BY]
 
 > Sort studet list by date of birth as below Query
