@@ -513,6 +513,45 @@ Result:
 
 <br />
 
+## VI. The trigger, store procedure, and the index should be added
+
+<br />
+
+### 1. USE `STORE PROCEDURE`
+
+> To query K17's GPA as below query:
+
+```sql
+EXEC [dbo].[spCompareGPA]
+```
+
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/11.png?raw=true">
+
+> SQL above have a `Store procedure` **`[dbo].[spCompareGPA]`** use to query K17's GPA and this is it's query :
+
+```sql
+CREATE OR ALTER PROC spCompareGPA
+AS
+SELECT ID_Student, AVG([AVG]) as GPA
+FROM(
+	SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+	FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
+	GROUP BY sa.ID_Student, a.ID_SubjectSemester
+) tb1
+WHERE ID_Student LIKE '__17%'
+GROUP BY ID_Student
+```
+
+<br />
+
+<br />
+
+
+
+
+
 
 
 
