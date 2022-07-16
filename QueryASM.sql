@@ -119,3 +119,28 @@ ORDER BY sa.Score DESC
 
 -- 11 Gọi SP để truy vấn GPA của khóa 17
 EXEC [dbo].[spCompareGPA]
+
+-- 12TRIGGER
+CREATE OR ALTER TRIGGER trigger_asm ON Student
+AFTER INSERT
+AS
+	DECLARE @STATUS INT;
+	DECLARE @idS NCHAR(20); 
+	SELECT @idS = ID_Student FROM inserted
+	IF (CAST(SUBSTRING(@idS, 3, LEN(@idS)) AS int) >= 1000000)
+	BEGIN 
+		PRINT 'INVALID'
+		ROLLBACK TRAN
+	END
+	IF SUBSTRING(@idS, 1, 1) < 'A' OR SUBSTRING(@idS, 1, 1) > 'Z' OR SUBSTRING(@idS, 2, 2) < 'A' OR SUBSTRING(@idS, 2, 2) > 'Z'
+	BEGIN 
+		PRINT 'INVALID'
+		ROLLBACK TRAN
+	END
+
+INSERT INTO Student VALUES ('HE163015', 'Hoang Nam', 1, CAST(N'2022-07-01' AS Date))
+
+
+--13 INDEX
+CREATE INDEX index_ID ON [Student](ID_Student)
+SELECT * FROM Subject
