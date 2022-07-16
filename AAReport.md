@@ -237,6 +237,10 @@ FROM
 ORDER BY StartDate DESC	
 ```
 
+Result: 
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/1.png?raw=true">
+
 > SQL above have a function **`[dbo].[GetStatus] (ID_Student, ID_SubjectSemester)`** use to check PASS or NOT PASS or FAIL ATTENDANCE and this is here: 
 
 ```sql
@@ -303,6 +307,42 @@ BEGIN
 	RETURN @Status;
 END;
 ```
+
+<br />
+
+### 2.
+
+> Each Subject code, student can check their detailed result of as below Query:
+
+```sql
+WITH temp AS (
+	SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+	FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
+	GROUP BY sa.ID_Student, a.ID_SubjectSemester
+	HAVING ID_Student = 'HE163061' AND ID_SubjectSemester = 'DBI202SU2022'
+)
+
+SELECT a.name AS [GRADE ITEM], a.Weight AS [WEIGHT], sa.Score AS [VALUE], (SELECT AVG FROM temp) AS AVG
+FROM Student_Assessment sa JOIN Assessment a ON sa.ID_Assessment = a.ID_Assessment 
+WHERE ID_Student = 'HE163061' AND ID_SubjectSemester = 'DBI202SU2022'
+```
+
+Result: 
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/2.png?raw=true">
+
+<br />
+
+### 3. USE [ORDER BY]
+
+> Sort studet list by date of birth as below Query
+
+```sql
+SELECT * FROM Student ORDER BY dob DESC
+```
+
+
+
 
 
 
