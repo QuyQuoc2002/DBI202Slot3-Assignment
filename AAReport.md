@@ -494,7 +494,27 @@ Result:
 
 <br />
 
-### 10. USE `SELF JOIN`, `WITH AS`
+### 10. 
+
+> Find the student with the highest Final score of DBI202 semester SU2022 as below query
+
+```sql
+SELECT Top 1 s.ID_Student, s.name, a.ID_SubjectSemester, sa.Score
+FROM Student s	JOIN Student_Assessment sa ON s.ID_Student = sa.ID_Student 
+				JOIN Assessment a ON a.ID_Assessment = sa.ID_Assessment
+WHERE a.name = 'FinalExam' AND a.ID_SubjectSemester = 'DBI202SU2022'
+ORDER BY sa.Score DESC
+```
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/10.png?raw=true">
+
+<br />
+
+<br />
+
+
+
 
 
 
