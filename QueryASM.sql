@@ -16,12 +16,24 @@ FROM
 ) tb1
 ORDER BY StartDate DESC		
 
+-- 2 Each Subject code, student can check their detailed result of as below example:
+WITH temp AS (
+	SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+	FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
+	GROUP BY sa.ID_Student, a.ID_SubjectSemester
+	HAVING ID_Student = 'HE163061' AND ID_SubjectSemester = 'DBI202SU2022'
+)
 
--- 2 use ORDER BY để sắp xếp sinh viên theo ngày tháng năm sinh --
+SELECT a.name AS [GRADE ITEM], a.Weight AS [WEIGHT], sa.Score AS [VALUE], (SELECT AVG FROM temp) AS AVG
+FROM Student_Assessment sa JOIN Assessment a ON sa.ID_Assessment = a.ID_Assessment 
+WHERE ID_Student = 'HE163061' AND ID_SubjectSemester = 'DBI202SU2022'
+
+
+-- 3 use ORDER BY để sắp xếp sinh viên theo ngày tháng năm sinh --
 SELECT * FROM Student ORDER BY dob DESC
 
 
--- 3 use INNER JOINS để xem sinh viên HE162121 điểm danh môn JDP bao nhiêu lần trên tổng số slot của môn đó--
+-- 4 use INNER JOINS để xem sinh viên HE162121 điểm danh môn JDP bao nhiêu lần trên tổng số slot của môn đó--
 SELECT s.ID_Student, s.[name], sub.ID_Subject, se.Slot_Number, att.Check_Attendance, sub.totalSlot 
 FROM 
 Student s INNER JOIN Attendance att ON s.ID_Student = att.ID_Student 
@@ -31,7 +43,7 @@ Student s INNER JOIN Attendance att ON s.ID_Student = att.ID_Student
 WHERE s.ID_Student = 'HE162121' AND sub.ID_Subject = 'JPD111'
 
 
--- 4 use aggregate funtions để tính điểm trung bình môn của học sinh --
+-- 5 use aggregate funtions để tính điểm trung bình môn của học sinh --
 SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
 FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
 GROUP BY sa.ID_Student, a.ID_SubjectSemester
