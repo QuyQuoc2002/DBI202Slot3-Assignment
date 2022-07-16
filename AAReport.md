@@ -548,6 +548,66 @@ GROUP BY ID_Student
 
 <br />
 
+### 2. USE `TRIGGER`
+
+> check valid of ID_Student by format 'HE163015', `TRIGGER` as below query:
+
+```sql
+CREATE OR ALTER TRIGGER trigger_asm ON Student
+AFTER INSERT
+AS
+	DECLARE @STATUS INT;
+	DECLARE @idS NCHAR(20); 
+	SELECT @idS = ID_Student FROM inserted
+	IF (CAST(SUBSTRING(@idS, 3, LEN(@idS)) AS int) >= 1000000)
+	BEGIN 
+		PRINT 'INVALID'
+		ROLLBACK TRAN
+	END
+	IF SUBSTRING(@idS, 1, 1) < 'A' OR SUBSTRING(@idS, 1, 1) > 'Z' OR SUBSTRING(@idS, 2, 2) < 'A' OR SUBSTRING(@idS, 2, 2) > 'Z'
+	BEGIN 
+		PRINT 'INVALID'
+		ROLLBACK TRAN
+	END
+```
+
+TEST CASE 1:
+```sql
+INSERT INTO Student VALUES ('H6163015', 'Hoang Nam', 1, CAST(N'2022-07-01' AS Date))
+```
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/TRIGGER_TEST1.png?raw=true">
+
+<br />
+
+TEST CASE 2:
+```sql
+INSERT INTO Student VALUES ('HE1630155', 'Hoang Nam', 1, CAST(N'2022-07-01' AS Date))
+```
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/TRIGGER_TEST2.png?raw=true">
+
+<br />
+
+TEST CASE 3:
+```sql
+INSERT INTO Student VALUES ('HE163015', 'Hoang Nam', 1, CAST(N'2022-07-01' AS Date))
+```
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/TRIGGER_TEST3.png?raw=true">
+
+<br />
+
+<br />
+
+### 3. USE `INDEX`
+
+
+
+
 
 
 
