@@ -355,7 +355,7 @@ Result:
 
 <br />
 
-### 4. USE `ORDER BY`
+### 4. USE `INNER JOIN`
 
 > How many times does a student HE162121 take the JDP course out of the total number of slots for that subject?
 
@@ -363,9 +363,9 @@ Result:
 SELECT s.ID_Student, s.[name], sub.ID_Subject, se.Slot_Number, att.Check_Attendance, sub.totalSlot 
 FROM 
 Student s INNER JOIN Attendance att ON s.ID_Student = att.ID_Student 
-		  INNER JOIN [Session] se ON se.ID_Session = att.ID_Session
-		  INNER JOIN Subject_Semester ss ON ss.ID_SubjectSemester = se.ID_SubjectSemester
-		  INNER JOIN [Subject] sub ON sub.ID_Subject = ss.ID_Subject
+          INNER JOIN [Session] se ON se.ID_Session = att.ID_Session
+          INNER JOIN Subject_Semester ss ON ss.ID_SubjectSemester = se.ID_SubjectSemester
+          INNER JOIN [Subject] sub ON sub.ID_Subject = ss.ID_Subject
 WHERE s.ID_Student = 'HE162121' AND sub.ID_Subject = 'JPD111'
 ```
 
@@ -382,7 +382,7 @@ Result:
 
 > Calculate the student's grade point average each subject as below query:
 
-```slq
+```sql
 SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
 FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
 GROUP BY sa.ID_Student, a.ID_SubjectSemester
