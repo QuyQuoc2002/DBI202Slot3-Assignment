@@ -333,13 +333,36 @@ Result:
 
 <br />
 
-### 3. USE [ORDER BY]
+### 3. USE `ORDER BY`
 
 > Sort studet list by date of birth as below Query
 
 ```sql
 SELECT * FROM Student ORDER BY dob DESC
 ```
+
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/3.png?raw=true">
+
+<br />
+
+### 4. USE `ORDER BY`
+
+> How many times does a student HE162121 take the JDP course out of the total number of slots for that subject?
+
+```sql
+SELECT s.ID_Student, s.[name], sub.ID_Subject, se.Slot_Number, att.Check_Attendance, sub.totalSlot 
+FROM 
+Student s INNER JOIN Attendance att ON s.ID_Student = att.ID_Student 
+		  INNER JOIN [Session] se ON se.ID_Session = att.ID_Session
+		  INNER JOIN Subject_Semester ss ON ss.ID_SubjectSemester = se.ID_SubjectSemester
+		  INNER JOIN [Subject] sub ON sub.ID_Subject = ss.ID_Subject
+WHERE s.ID_Student = 'HE162121' AND sub.ID_Subject = 'JPD111'
+```
+
+Result
+
 
 
 
