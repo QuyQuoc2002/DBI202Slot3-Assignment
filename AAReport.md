@@ -605,6 +605,20 @@ Result:
 
 ### 3. USE `INDEX`
 
+> Indexes are used to retrieve data from the database very fast. The users cannot see the indexes, they are just used to speed up searches/queries.
+
+> Should create indexes on columns that will be frequently searched against.
+
+Query as below: 
+
+```sql
+CREATE INDEX index_ID ON [Student](ID_Student)
+```
+
+##  
+
+© Copyright
+
 
 
 
