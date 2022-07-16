@@ -50,7 +50,7 @@ GROUP BY sa.ID_Student, a.ID_SubjectSemester
 ORDER BY sa.ID_Student
 
 
--- 5 use GROUP BY and HAVING để tìm ra những sinh viên có GPA đạt xuất sắc
+-- 6 use GROUP BY and HAVING để tìm ra những sinh viên có GPA đạt xuất sắc
 SELECT ID_Student, AVG([AVG]) as GPA
 FROM(
 	SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
@@ -61,7 +61,7 @@ GROUP BY ID_Student
 HAVING AVG([AVG]) >= 9 
 
 
--- 6 Tìm CÓC VÀNG (người có điểm trung bình môn cao nhất trong kì)
+-- 7 Tìm CÓC VÀNG (người có điểm trung bình môn cao nhất trong kì)
 SELECT TOP 1 ID_Student, Semester, AVG([AVG]) AS [AVG in Semester]
 FROM( 
 	SELECT sa.ID_Student, a.ID_SubjectSemester, ss.Semester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
@@ -74,14 +74,14 @@ GROUP BY ID_Student, Semester
 ORDER BY [AVG in Semester] DESC
 
 
--- 7 Dùng LEFT JOIN và WHERE để xem những sinh viên nào chưa được xếp lớp
+-- 8 Dùng LEFT JOIN và WHERE để xem những sinh viên nào chưa được xếp lớp
 SELECT s.ID_Student, s.[name], e.ID_Group
 FROM
 Student s LEFT JOIN Enroll e ON S.ID_Student = e.ID_Student
 WhERE e.ID_Group IS NULL
 
 
--- 8 Gọi SP để truy vấn GPA của khóa 17
+-- 10 Gọi SP để truy vấn GPA của khóa 17
 EXEC [dbo].[spCompareGPA]
 
 
@@ -105,18 +105,17 @@ WHERE a.GPA > b.GPA
 ORDER BY a.ID_Student
 
 
--- 10 Each Subject code, student can check their detailed result of as below example:
-WITH temp AS (
-	SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
-	FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
-	GROUP BY sa.ID_Student, a.ID_SubjectSemester
-	HAVING ID_Student = 'HE163061' AND ID_SubjectSemester = 'DBI202SU2022'
-)
+--10 Tìm học sinh có điểm số Final cao nhất của môn DBI202 kì SU2022
 
-SELECT a.name AS [GRADE ITEM], a.Weight AS [WEIGHT], sa.Score AS [VALUE], (SELECT AVG FROM temp) AS AVG
-FROM Student_Assessment sa JOIN Assessment a ON sa.ID_Assessment = a.ID_Assessment 
-WHERE ID_Student = 'HE163061' AND ID_SubjectSemester = 'DBI202SU2022'
+SELECT Top 1 s.ID_Student, s.name, a.ID_SubjectSemester, sa.Score
+FROM Student s	JOIN Student_Assessment sa ON s.ID_Student = sa.ID_Student 
+				JOIN Assessment a ON a.ID_Assessment = sa.ID_Assessment
+WHERE a.name = 'FinalExam' AND a.ID_SubjectSemester = 'DBI202SU2022'
+ORDER BY sa.Score DESC
 
 
+ 
 
 
+-- 11 Gọi SP để truy vấn GPA của khóa 17
+EXEC [dbo].[spCompareGPA]

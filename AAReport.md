@@ -397,7 +397,7 @@ ORDER BY sa.ID_Student
 
 ### 6. USE `GROUP BY` and `HAVING` 
 
-> Find students with excellent GPA as below query
+> Find students with excellent GPA as below query:
 
 ```sql
 SELECT ID_Student, AVG([AVG]) as GPA
@@ -420,7 +420,7 @@ Result:
 
 ### 7. USE `SUB_QUERY`, `TOP`, `LIKE`
 
-> Find GOLDEN TOAD (who has the highest grade point average in the semester) as below query
+> Find GOLDEN TOAD (who has the highest grade point average in the semester) as below query:
 
 ```sql
 SELECT TOP 1 ID_Student, Semester, AVG([AVG]) AS [AVG in Semester]
@@ -436,6 +436,66 @@ ORDER BY [AVG in Semester] DESC
 ```
 
 Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/7.png?raw=true">
+
+<br />
+
+<br />
+
+### 8. USE `LEFT JOIN`, `WHERE`
+
+> Find students who have not been placed in class as beblow query:
+
+```sql
+SELECT s.ID_Student, s.[name], e.ID_Group
+FROM
+Student s LEFT JOIN Enroll e ON S.ID_Student = e.ID_Student
+WhERE e.ID_Group IS NULL
+```
+
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/8.png?raw=true">
+
+<br />
+
+<br />
+
+### 9. USE `SELF JOIN`, `WITH AS`
+
+> to compare GPA of 16 students as below query
+
+```sql
+WITH temp AS 
+(
+	SELECT ID_Student, AVG([AVG]) as GPA
+	FROM
+	(
+		SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+		FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
+		GROUP BY sa.ID_Student, a.ID_SubjectSemester
+	) tb1
+	WHERE ID_Student LIKE '__16%'
+	GROUP BY ID_Student
+)
+
+SELECT a.ID_Student, a.GPA, '>' as [ ], b.ID_Student, b.GPA 
+FROM temp a, temp b
+WHERE a.GPA > b.GPA
+ORDER BY a.ID_Student
+```
+
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/9.png?raw=true">
+
+<br />
+
+<br />
+
+### 10. USE `SELF JOIN`, `WITH AS`
+
 
 
 
