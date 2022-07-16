@@ -216,6 +216,8 @@ FOREIGN KEY (ID_Session) REFERENCES [Session](ID_Session),
 
 <br />
 
+<br />
+
 ### 1. USE `FUNCTION`, `AGGREGATE`, `SUB-QUERRY` <br />
 > Students can check their results at the end of semester as following Query:
 
@@ -310,6 +312,8 @@ END;
 
 <br />
 
+<br />
+
 ### 2.
 
 > Each Subject code, student can check their detailed result of as below Query:
@@ -333,6 +337,8 @@ Result:
 
 <br />
 
+<br />
+
 ### 3. USE `ORDER BY`
 
 > Sort studet list by date of birth as below Query
@@ -344,6 +350,8 @@ SELECT * FROM Student ORDER BY dob DESC
 Result:
 
 <img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/3.png?raw=true">
+
+<br />
 
 <br />
 
@@ -361,7 +369,77 @@ Student s INNER JOIN Attendance att ON s.ID_Student = att.ID_Student
 WHERE s.ID_Student = 'HE162121' AND sub.ID_Subject = 'JPD111'
 ```
 
-Result
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/4.png?raw=true">
+
+
+<br />
+
+<br />
+
+### 5. USE `AGGREGATE FUNCTIONS`
+
+> Calculate the student's grade point average each subject as below query:
+
+```slq
+SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
+GROUP BY sa.ID_Student, a.ID_SubjectSemester
+ORDER BY sa.ID_Student
+```
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/5.png?raw=true">
+
+<br />
+
+<br />
+
+### 6. USE `GROUP BY` and `HAVING` 
+
+> Find students with excellent GPA as below query
+
+```sql
+SELECT ID_Student, AVG([AVG]) as GPA
+FROM(
+	SELECT sa.ID_Student, a.ID_SubjectSemester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+	FROM Assessment a INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment
+	GROUP BY sa.ID_Student, a.ID_SubjectSemester
+) tb1
+GROUP BY ID_Student 
+HAVING AVG([AVG]) >= 9 
+```
+
+Result:
+
+<img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/6.png?raw=true">
+
+<br />
+
+<br />
+
+### 7. USE `SUB_QUERY`, `TOP`, `LIKE`
+
+> Find GOLDEN TOAD (who has the highest grade point average in the semester) as below query
+
+```sql
+SELECT TOP 1 ID_Student, Semester, AVG([AVG]) AS [AVG in Semester]
+FROM( 
+	SELECT sa.ID_Student, a.ID_SubjectSemester, ss.Semester, SUM(sa.score * a.[Weight] / 100) AS [AVG]
+	FROM Assessment a	INNER JOIN Student_Assessment sa ON a.ID_Assessment = sa.ID_Assessment		
+						INNER JOIN Subject_Semester ss ON ss.ID_SubjectSemester = a.ID_SubjectSemester
+	GROUP BY sa.ID_Student, a.ID_SubjectSemester, ss.Semester
+	) tb1
+WHERE ID_Student LIKE '__17%' AND Semester = 'SU2022' --nhập khóa và kì học 
+GROUP BY ID_Student, Semester
+ORDER BY [AVG in Semester] DESC
+```
+
+Result:
+
+
+
+
 
 
 
