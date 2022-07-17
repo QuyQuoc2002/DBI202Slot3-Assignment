@@ -22,7 +22,7 @@ This database consists of 11 tables:
     - ID `HS17____` enroll group `IB1609`
     - ID `HS18____` has not enrolled any group
 
-4. ***Subject*** (9 Records) form idSubject_totalSlot : `DBI202_10`, `JPD111_10`, `IBI101_10`, `FIN202_10`, `PRO193_10`, `MAD101_10`, `ECO121_8`, `ENM401_8`, `SSG103_5`
+4. ***Subject*** (9 Records) form idSubject_totalSlot : `DBI202_10`, `JPD111_10`, `IBI101_10`, `FIN202_10`, `PRO192_10`, `MAD101_10`, `ECO121_8`, `ENM401_8`, `SSG103_5`
 5. ***SubjectSemester*** (14 records): `9` subject in semester `SU2022`, `5` subject in semester `SP2022`
 6. ***TimeSlot*** (6 records): 1 -> 6
 7. ***Group_Subject_Semester*** (16 records): 
@@ -40,13 +40,13 @@ This database consists of 11 tables:
     - HE162121_45
     - HE163061_45
     - HE163063_55 (reStudy PRO)
-    - HE171111(25)
-    - HE174423(25),
-	- HS161001_41
-	- HS163062_41
-	- HS173222_21
-	- HS173313_21
-	- HS174331_21
+    - HE171111_25
+    - HE174423_25,
+    - HS161001_41
+    - HS163062_41
+    - HS173222_21
+    - HS173313_21
+    - HS174331_21
 11. ***Student_Assessment*** (229 records) details:
     - HE162121 takes SSG103(`PASS`), MAD(`PASS`), PRO(`PASS`), DBI(`NOT PASS` 1 score is 0), JPD(`Fail attendance`)
     - HE163061 takes SSG103(`PASS`), MAD(`PASS`), PRO(`PASS`), DBI(`PASS`), JPD(`PASS`)     ***GOLDEN TOAD*** in SU2022
@@ -66,6 +66,8 @@ This database consists of 11 tables:
 <p align="center" margin  =25px padding = 25px>
   <img src="https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/Image/ER.jpg?raw=true">
 </p>
+
+At this ERD we have a table called `Subject_Semester`, this table is to serve the case: Subject `ENM401` semester `SP2022` in `Assessment` table has `7` records and semester `SU2022` has `9` records, another case is student with id `HE163063` bis subject `PRO192` in semester `SP2022`, so he have to repeat this subject at semester `SU2022`
 
 <br />
 
