@@ -25,5 +25,5 @@ This database must be normalised up to at least 3rd Normal Form.
 - III. The relational schema derived from the ERD that is at least in 3NF.
 - IV. The set of database statements used to create the tables.
 - V. 10 queries that demonstrate the usefulness of the database.
-- VI. The trigger, store procedure, and the index should be added
+- VI. The trigger, store procedure, and the index should be added.
 
