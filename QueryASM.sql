@@ -80,11 +80,6 @@ FROM
 Student s LEFT JOIN Enroll e ON S.ID_Student = e.ID_Student
 WhERE e.ID_Group IS NULL
 
-
--- 10 Gọi SP để truy vấn GPA của khóa 17
-EXEC [dbo].[spCompareGPA]
-
-
 -- 9 use SELF JOIN để so sánh GPA của các học sinh khóa 16
 WITH temp AS 
 (
