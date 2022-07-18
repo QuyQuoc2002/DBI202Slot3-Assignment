@@ -6,6 +6,10 @@
 
 ## I. Brief description of the database
 
+> Download and run file `INSERT_DATABASE.sql` to receive project
+>
+> or click this link for receiving query to create project: [DATABASE FOR ASSIGNMENT](https://github.com/QuyQuoc2002/DBI202Slot3-Assignment/blob/main/INSERT_DATABASE.sql).
+
 This database consists of 11 tables:
 
 1. ***Student*** (11 records):
